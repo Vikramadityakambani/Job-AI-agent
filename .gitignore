@@ -1,0 +1,30 @@
+# Python temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Dynamic crawlers cache
+*googlebot.html
+*valid_page.html
+*wellfound_page.html
+
+# Generated Data Outputs
+*.csv
+jobs_export.csv
+
+# Private Configurations & Secrets (Slack Webhooks & API keys)
+scheduler_config.json
+.env
+
+# Editor & System metadata
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS - Future of Work Global Careers</title>
+    <!-- Modern Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="glass-bg"></div>
+
+    <!-- Navbar (Phase 5 Redesign) -->
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <i class="fa-solid fa-compass-drafting logo-icon" style="font-size: 1.3rem; margin-right: 8px;"></i>
+            <span>NEXUS</span>
+        </div>
+        <div class="navbar-menu">
+            <a href="#" class="nav-item active">Platform</a>
+            <a href="#" class="nav-item">Features</a>
+            <a href="#" class="nav-item">Pricing</a>
+            <a href="#" class="nav-item">Careers</a>
+            <a href="#" class="nav-item">About</a>
+        </div>
+        <div class="navbar-actions">
+            <button class="btn-login">Login</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Connect to the Future of Work.<br>Discover AI-Powered Global Careers.</h1>
+                <p class="hero-subtitle">Leverage advanced AI to bridge talent with leading tech opportunities across the global network.</p>
+
+                <!-- Search Controls -->
+                <div class="search-wrapper">
+                    <div class="search-inner">
+                        <input type="text" id="search-input" placeholder="Search for Global AI & Tech Roles..." required>
+                        <button id="search-btn" class="search-submit-btn">
+                            <span id="btn-text" class="hidden">Aggregate Jobs</span>
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Advanced Settings Accordion -->
+                <div class="settings-accordion" style="width: 100%; max-width: 650px; margin-top: 20px;">
+                    <button class="accordion-toggle" id="settings-toggle">
+                        <i class="fa-solid fa-sliders"></i> Advanced Settings & Integrations
+                        <i class="fa-solid fa-chevron-down caret"></i>
+                    </button>
+                    <div class="settings-content" id="settings-content">
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="firecrawl-key">Firecrawl API Key (Optional)</label>
+                                <input type="password" id="firecrawl-key" placeholder="fc-your-key-here">
+                                <small>Enables live crawling for Wellfound. If blank, fallback generator runs.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="slack-webhook">Slack Webhook URL (Optional)</label>
+                                <input type="password" id="slack-webhook" placeholder="https://hooks.slack.com/services/...">
+                                <small>Sends structured job summaries straight to your Slack channel.</small>
+                            </div>
+                        </div>
+                        <div class="scheduler-divider"></div>
+                        <div class="grid-2" style="margin-top: 15px;">
+                            <div class="form-group">
+                                <label for="schedule-interval">Cron Schedule Interval</label>
+                                <select id="schedule-interval" class="form-select">
+                                    <option value="none">Disabled</option>
+                                    <option value="test">Test Mode (Every 1 Min)</option>
+                                    <option value="daily">Daily (Every 24 Hours)</option>
+                                    <option value="weekly">Weekly (Every 7 Days)</option>
+                                </select>
+                                <small>Runs searches automatically in background and alerts Slack.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="schedule-keyword">Scheduler Query Keyword</label>
+                                <input type="text" id="schedule-keyword" placeholder="e.g. Python Developer">
+                                <small>Keyword to search when cron scheduler triggers.</small>
+                            </div>
+                        </div>
+                        <div class="scheduler-actions" style="margin-top: 15px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                            <button id="save-schedule-btn" class="btn btn-secondary">
+                                <i class="fa-solid fa-floppy-disk"></i> Save Schedule
+                            </button>
+                            <span id="scheduler-status" class="scheduler-status-text">Status: Idle</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Features Card -->
+                <div class="features-card">
+                    <p class="features-card-subtitle">Leverage advanced AI to bridge talent with leading tech opportunities across the global network.</p>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon-wrapper cyan-glow">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="9" stroke="url(#cyan-pink-grad)" stroke-width="1.5" stroke-dasharray="1 1"/>
+                                    <circle cx="12" cy="12" r="5" stroke="url(#cyan-pink-grad)" stroke-width="1.5"/>
+                                    <path d="M12 2C15 5 15 19 12 22C9 19 9 5 12 2Z" stroke="url(#cyan-pink-grad)" stroke-width="1.5"/>
+                                    <path d="M2 12C5 15 19 15 22 12C19 9 5 9 2 12Z" stroke="url(#cyan-pink-grad)" stroke-width="1.5"/>
+                                    <circle cx="12" cy="5" r="1.2" fill="#00d2ff"/>
+                                    <circle cx="12" cy="19" r="1.2" fill="#e040fb"/>
+                                    <circle cx="5" cy="12" r="1.2" fill="#e040fb"/>
+                                    <circle cx="19" cy="12" r="1.2" fill="#00d2ff"/>
+                                    <circle cx="12" cy="12" r="1.8" fill="#fff"/>
+                                </svg>
+                            </div>
+                            <span>Global Network</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrapper purple-glow">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.5 18C7.5 18 6.5 16.5 6.5 14.5C6.5 13 7.5 11.5 8.5 11C8 9.5 9 7.5 11 7C12 6.5 13.5 7 14.5 8" stroke="url(#purple-pink-grad)" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M14.5 18C16.5 18 17.5 16.5 17.5 14.5C17.5 13 16.5 11.5 15.5 11C16 9.5 15 7.5 13 7C12 6.5 10.5 7 9.5 8" stroke="url(#purple-pink-grad)" stroke-width="1.5" stroke-linecap="round"/>
+                                    <circle cx="9.5" cy="8" r="1" fill="#e040fb"/>
+                                    <circle cx="14.5" cy="8" r="1" fill="#ff7518"/>
+                                    <circle cx="6.5" cy="14.5" r="1" fill="#e040fb"/>
+                                    <circle cx="17.5" cy="14.5" r="1" fill="#ff7518"/>
+                                    <circle cx="12" cy="12" r="1.5" fill="#fff"/>
+                                    <line x1="9.5" y1="8" x2="12" y2="12" stroke="url(#purple-pink-grad)" stroke-width="1"/>
+                                    <line x1="14.5" y1="8" x2="12" y2="12" stroke="url(#purple-pink-grad)" stroke-width="1"/>
+                                    <line x1="6.5" y1="14.5" x2="12" y2="12" stroke="url(#purple-pink-grad)" stroke-width="1"/>
+                                    <line x1="17.5" y1="14.5" x2="12" y2="12" stroke="url(#pink-purple-grad)" stroke-width="1"/>
+                                </svg>
+                            </div>
+                            <span>Skill Matching</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrapper orange-glow">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C12 2 17 6 17 12C17 14 16 16 15 17L12 15L9 17C8 16 7 14 7 12C7 6 12 2 12 2Z" stroke="url(#orange-yellow-grad)" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <path d="M9 17V21L12 19L15 21V17" stroke="url(#orange-yellow-grad)" stroke-width="1.5" stroke-linecap="round"/>
+                                    <circle cx="12" cy="9" r="1.8" stroke="url(#orange-yellow-grad)" stroke-width="1.5"/>
+                                    <path d="M7 14H4L3 17H7" stroke="url(#orange-yellow-grad)" stroke-width="1.5"/>
+                                    <path d="M17 14H20L21 17H17" stroke="url(#orange-yellow-grad)" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>Remote Roles</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrapper blue-glow">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 3V21H21" stroke="url(#blue-cyan-grad)" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M6 16V17" stroke="url(#blue-cyan-grad)" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M10 12V17" stroke="url(#blue-cyan-grad)" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M14 8V17" stroke="url(#blue-cyan-grad)" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M18 5V17" stroke="url(#blue-cyan-grad)" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M6 14L10 9L14 11L18 4" stroke="#00d2ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="18" cy="4" r="1.2" fill="#fff"/>
+                                </svg>
+                            </div>
+                            <span>Real-time Insights</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrapper pink-glow">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C12 2 20 5 20 11C20 17 12 21 12 21C12 21 4 17 4 11C4 5 12 2 12 2Z" stroke="url(#pink-purple-grad)" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <rect x="9" y="10" width="6" height="5" rx="1.5" stroke="url(#pink-purple-grad)" stroke-width="1.5"/>
+                                    <path d="M10 10V8C10 6.89543 10.8954 6 12 6C13.1046 6 14 6.89543 14 8V10" stroke="url(#pink-purple-grad)" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>Secure Platform</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Interactive SVG Icons for Covered Platforms -->
+                <div class="svg-row">
+                    <span class="svg-label">Covered Platforms:</span>
+                    <div class="svg-icons">
+                        <div class="svg-icon-card" title="Naukri.com">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="24" height="24" rx="6" fill="#ff7518" fill-opacity="0.15"/>
+                                <path d="M7 17V7M7 11L12 7M7 12L12 17M12 7V17M12 11L17 7M12 12L17 17" stroke="#ff7518" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Naukri</span>
+                        </div>
+                        <div class="svg-icon-card" title="RemoteOK">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="24" height="24" rx="6" fill="#e040fb" fill-opacity="0.15"/>
+                                <path d="M5 12H19M5 12L10 7M5 12L10 17M19 12L14 7M19 12L14 17" stroke="#e040fb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>RemoteOK</span>
+                        </div>
+                        <div class="svg-icon-card" title="Wellfound">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="24" height="24" rx="6" fill="#10b981" fill-opacity="0.15"/>
+                                <path d="M12 5V19M5 12H19" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span>Wellfound</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shared Gradients Definition for SVG Icons -->
+                <svg width="0" height="0" style="position: absolute;">
+                    <defs>
+                        <linearGradient id="cyan-pink-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#00d2ff"/>
+                            <stop offset="100%" stop-color="#e040fb"/>
+                        </linearGradient>
+                        <linearGradient id="purple-pink-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#e040fb"/>
+                            <stop offset="100%" stop-color="#ff7518"/>
+                        </linearGradient>
+                        <linearGradient id="orange-yellow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff7518"/>
+                            <stop offset="100%" stop-color="#ffb800"/>
+                        </linearGradient>
+                        <linearGradient id="blue-cyan-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#3b82f6"/>
+                            <stop offset="100%" stop-color="#00d2ff"/>
+                        </linearGradient>
+                        <linearGradient id="pink-purple-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff2e93"/>
+                            <stop offset="100%" stop-color="#a855f7"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Status Log / Progress Console -->
+        <section class="status-section card hidden" id="status-panel">
+            <div class="status-header">
+                <h3><i class="fa-solid fa-terminal"></i> Status Console Logs</h3>
+                <div class="pulse-loader"></div>
+            </div>
+            <div class="console-logs" id="console-logs">
+                <!-- Live logs will be appended here -->
+            </div>
+        </section>
+
+        <!-- Export / Summary Header -->
+        <section class="results-header-section hidden" id="results-header">
+            <div class="stats-card">
+                <span class="stat-label">Jobs Found</span>
+                <span class="stat-value" id="stats-total">0</span>
+            </div>
+            <div class="actions">
+                <a id="download-btn" class="btn btn-success" href="/api/download" download>
+                    <i class="fa-solid fa-file-csv"></i> Download CSV Export
+                </a>
+            </div>
+        </section>
+
+        <!-- Results Display Cards Grid -->
+        <main class="results-grid" id="results-grid">
+            <!-- Job listing cards will be dynamically loaded here -->
+        </main>
+        
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state">
+            <i class="fa-regular fa-folder-open empty-icon"></i>
+            <h3>No Jobs Aggregated Yet</h3>
+            <p>Enter a job title above and hit the search icon to start your automated search.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-left">
+            © 2077 Nexus AI. | All Rights Reserved.
+        </div>
+        <div class="footer-right">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms</a>
+            <a href="#">Support</a>
+        </div>
+    </footer>
+
+    <!-- Notification Toast -->
+    <div class="toast hidden" id="toast">
+        <i class="fa-solid fa-circle-check toast-icon"></i>
+        <span id="toast-message">Export Successful!</span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
