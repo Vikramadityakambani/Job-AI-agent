@@ -184,7 +184,11 @@ def fetch_remoteok_jobs(keyword: str, logs: List[Dict[str, str]]) -> List[JobLis
     }
     
     try:
-        response = requests.get(url, headers=headers, impersonate="chrome120", timeout=15)
+        try:
+            response = requests.get(url, headers=headers, impersonate="chrome120", timeout=15)
+        except Exception as e:
+            log_event(logs, f"RemoteOK: First attempt failed ({e}). Retrying with SSL verify disabled...", "warning")
+            response = requests.get(url, headers=headers, impersonate="chrome120", timeout=15, verify=False)
         if response.status_code != 200:
             log_event(logs, f"RemoteOK: API returned error status {response.status_code}", "warning")
             return []
@@ -242,7 +246,16 @@ def fetch_naukri_jobs(keyword: str, logs: List[Dict[str, str]]) -> List[JobListi
     
     try:
         log_event(logs, f"Naukri: Scraping HTML target '{url}'...", "info")
-        response = requests.get(url, headers=headers, impersonate="chrome120", timeout=15, proxies={"http": selected_proxy, "https": selected_proxy})
+        response = None
+        # Try proxy first (with verify=False to avoid SSL issues)
+        try:
+            response = requests.get(url, headers=headers, impersonate="chrome120", timeout=10, proxies={"http": selected_proxy, "https": selected_proxy}, verify=False)
+            if response.status_code != 200:
+                raise RuntimeError(f"HTTP status code {response.status_code}")
+        except Exception as e:
+            log_event(logs, f"Naukri: Proxy query failed ({e}). Attempting direct fallback connection...", "warning")
+            # Fall back to direct request (with verify=False to handle SSL interception)
+            response = requests.get(url, headers=headers, impersonate="chrome120", timeout=15, verify=False)
         if response.status_code == 200:
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(response.text, "html.parser")
@@ -358,7 +371,11 @@ def fetch_wellfound_jobs(keyword: str, logs: List[Dict[str, str]], firecrawl_key
                 }
             }
             
-            response = requests.post("https://api.firecrawl.dev/v1/scrape", json=payload, headers=headers, timeout=40)
+            try:
+                response = requests.post("https://api.firecrawl.dev/v1/scrape", json=payload, headers=headers, timeout=40)
+            except Exception as e:
+                log_event(logs, f"Wellfound: Firecrawl post failed ({e}). Retrying with SSL verify disabled...", "warning")
+                response = requests.post("https://api.firecrawl.dev/v1/scrape", json=payload, headers=headers, timeout=40, verify=False)
             if response.status_code == 200:
                 result = response.json()
                 if result.get("success") and "data" in result:
@@ -461,7 +478,11 @@ def push_slack_notification(webhook_url: str, keyword: str, jobs: List[JobListin
     
     try:
         headers = {"Content-Type": "application/json"}
-        requests.post(webhook_url, json=payload, headers=headers, timeout=10)
+        try:
+            requests.post(webhook_url, json=payload, headers=headers, timeout=10)
+        except Exception as e:
+            print(f"Slack notification first attempt failed: {e}. Retrying with SSL verify disabled...")
+            requests.post(webhook_url, json=payload, headers=headers, timeout=10, verify=False)
         print("Successfully dispatched Slack push notification!")
     except Exception as e:
         print(f"Failed to dispatch Slack notification: {e}")
@@ -645,7 +666,26 @@ class JobAgentHandler(BaseHTTPRequestHandler):
 
 def start_server(port=8000):
     server_address = ("", port)
-    httpd = HTTPServer(server_address, JobAgentHandler)
+    
+    max_retries = 100
+    httpd = None
+    for i in range(max_retries):
+        try:
+            httpd = HTTPServer(server_address, JobAgentHandler)
+            break
+        except OSError as e:
+            is_in_use = "Address already in use" in str(e) or (sys.platform.startswith("win") and getattr(e, "winerror", 0) == 10048)
+            if is_in_use:
+                print(f"Port {port} is occupied. Trying port {port + 1}...")
+                port += 1
+                server_address = ("", port)
+            else:
+                raise e
+
+    if not httpd:
+        print("Error: Could not bind to any port.")
+        sys.exit(1)
+
     console.print(Panel(
         f"[bold green]✓ Phase 5 Web Server Online![/bold green]\n"
         f"Dashboard available at: [bold yellow]http://localhost:{port}[/bold yellow]\n"
@@ -662,10 +702,15 @@ def start_server(port=8000):
         print("Server shutdown completed.")
 
 if __name__ == "__main__":
+    # Ensure script's directory is the current working directory
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    if script_dir:
+        os.chdir(script_dir)
+        
     load_scheduler_config()
     # Start scheduler background daemon thread
     t = threading.Thread(target=scheduler_thread_func)
     t.daemon = True
     t.start()
     
-    start_server(8000)
+    start_server(8080)

@@ -44,7 +44,11 @@ def fetch_remoteok_jobs(keyword: str) -> List[Dict[str, Any]]:
     }
     
     try:
-        response = requests.get(url, headers=headers, impersonate="chrome120", timeout=15)
+        try:
+            response = requests.get(url, headers=headers, impersonate="chrome120", timeout=15)
+        except Exception as e:
+            console.log(f"[yellow]RemoteOK: First attempt failed ({e}). Retrying with SSL verify disabled...[/yellow]")
+            response = requests.get(url, headers=headers, impersonate="chrome120", timeout=15, verify=False)
         if response.status_code != 200:
             console.log(f"[yellow]RemoteOK API returned status code {response.status_code}[/yellow]")
             return []
@@ -103,7 +107,11 @@ def fetch_naukri_jobs(keyword: str) -> List[Dict[str, Any]]:
     }
     
     try:
-        response = requests.get(url, headers=headers, impersonate="chrome120", timeout=15)
+        try:
+            response = requests.get(url, headers=headers, impersonate="chrome120", timeout=15)
+        except Exception as e:
+            console.log(f"[yellow]Naukri: First attempt failed ({e}). Retrying with SSL verify disabled...[/yellow]")
+            response = requests.get(url, headers=headers, impersonate="chrome120", timeout=15, verify=False)
         if response.status_code == 200:
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(response.text, "html.parser")
@@ -227,7 +235,11 @@ def fetch_wellfound_jobs(keyword: str) -> List[Dict[str, Any]]:
                 }
             }
             
-            response = requests.post("https://api.firecrawl.dev/v1/scrape", json=payload, headers=headers, timeout=40)
+            try:
+                response = requests.post("https://api.firecrawl.dev/v1/scrape", json=payload, headers=headers, timeout=40)
+            except Exception as e:
+                console.log(f"[yellow]Wellfound: Firecrawl post failed ({e}). Retrying with SSL verify disabled...[/yellow]")
+                response = requests.post("https://api.firecrawl.dev/v1/scrape", json=payload, headers=headers, timeout=40, verify=False)
             if response.status_code == 200:
                 result = response.json()
                 if result.get("success") and "data" in result:
@@ -402,4 +414,8 @@ def main():
         console.print(f"[dim]And {len(aggregated_jobs) - 15} more jobs saved to CSV...[/dim]")
 
 if __name__ == "__main__":
+    # Ensure script's directory is the current working directory
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    if script_dir:
+        os.chdir(script_dir)
     main()

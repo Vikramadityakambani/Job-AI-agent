@@ -1,82 +1,95 @@
-# 🔍 Job Agent Scraper CLI
+# 💼 Job AI Agent & Resume Shapeshifter Suite
 
-A premium, resilient Python-based Command Line Interface (CLI) application that searches, aggregates, and standardizes job listings from **Naukri**, **RemoteOK**, and **Wellfound** (formerly AngelList), exporting the aggregated results directly to a CSV file.
-
-## 🚀 Key Features
-
-* **Stealth Scrapers:** Mimics Chrome browser TLS, HTTP/2 fingerprints, and headers using `curl_cffi` to avoid bot-detection blocks on major targets.
-* **Resilient Fallback Engine:** Features a dual-mode scraper system that gracefully falls back to generating query-relevant, high-fidelity mock listings if direct HTML crawling is blocked (Naukri) or missing API credentials (Wellfound).
-* **Firecrawl & LLM Extraction:** Integrates Mendable.ai's **Firecrawl API** to crawl Wellfound roles using direct scraping and a structured JSON schema extraction.
-* **Aggregated CSV Export:** Normalizes different data structures and writes results directly to a standardized `jobs_export.csv` file.
-* **Premium CLI UI:** Renders loading progress indicators, status alerts, and tabular results in the terminal using the `rich` library.
-* **Windows Terminal Encoding Fix:** Automatically reconfigures `sys.stdout` and `sys.stderr` to force UTF-8 encoding, preventing crashes when rendering currency symbols (e.g. `₹`) or status emojis in CMD/PowerShell.
+Welcome to the AI-powered Job Search and Application Suite. This workspace contains two integrated, premium local applications designed to automate and optimize your job application workflow from discovery to tailoring.
 
 ---
 
-## 📂 Project Structure
+## 📂 Workspace Structure
 
-* **[job_agent.py](job_agent.py):** The full, production-ready implementation of the Job Agent (combines Phases 1-4).
-* **[context.md](context.md):** Architectural context outlining the project scope, problem statements, target scraping methodologies, and phase breakdowns.
-* **Phase-specific Scripts:** (Provided for progressive testing and educational purposes)
-  * **[phase1_cli.py](phase1_cli.py):** Establishes terminal foundation shell, reconfigures encoding, and defines the standardized job listing model.
-  * **[phase2_cli.py](phase2_cli.py):** Integrates live RemoteOK API fetching and the normalized CSV export engine.
-  * **[phase3_cli.py](phase3_cli.py):** Adds the BeautifulSoup Naukri HTML scraper and fallback generator.
-  * **[phase4_cli.py](phase4_cli.py):** Integrates Wellfound scraping via the Firecrawl API and structured JSON schemas.
-  * **[phase5_web.py](phase5_web.py):** Implements the full-featured, glassmorphic dark-mode web server and dashboard (includes proxy rotation and Slack webhooks).
+The repository is divided into two primary sub-projects:
+
+```text
+antigravity/
+├── job AI agent/            # Module 1: Multi-platform Job Scraper & Web Dashboard
+│   ├── job_agent.py         # Standard CLI Scraper entry point
+│   ├── phase5_web.py        # Web Server & Glassmorphic Dashboard
+│   ├── styles.css           # Premium Web Dashboard styling
+│   ├── README.md            # Job Agent specific documentation
+│   └── ...
+│
+└── resume shapeshifter/     # Module 2: JD-to-Resume Tailoring Engine
+    ├── server.py            # Local HTTP server (zero heavy dependencies)
+    ├── app.js               # Reactive frontend controller (LCS word-diff engine)
+    ├── style.css            # Glassmorphic editor & print styles
+    ├── README.md            # Resume Shapeshifter specific documentation
+    └── ...
+```
 
 ---
 
-## 🛠️ Installation & Setup
+## 🔍 1. Job AI Agent Scraper & Web Dashboard
 
-Ensure you have Python 3.7+ installed. 
+A highly resilient Python-based command-line interface (CLI) and web dashboard that searches, aggregates, and standardizes job listings from **Naukri**, **RemoteOK**, and **Wellfound** (formerly AngelList).
 
-1. Install the required libraries:
+### Key Features
+* **Stealth Scrapers**: Bypasses anti-bot detection rules using `curl_cffi` to match Chrome browser TLS and HTTP/2 signatures.
+* **Firecrawl Integration**: Seamlessly integrates the Firecrawl API to extract structured JSON data from Wellfound roles.
+* **Dual-Mode Fallback**: Automatically generates high-fidelity query-relevant mock listings if direct scraping gets blocked, ensuring zero downtime.
+* **Web Dashboard**: A beautiful, glassmorphic dark-mode web server (`phase5_web.py`) equipped with proxy rotation and Slack webhook notifications.
+* **CSV Export**: Normalizes and exports all job results to a standardized `jobs_export.csv` file.
+
+👉 For detailed setup and usage instructions, see [job AI agent/README.md](file:///c:/Users/vikra/Downloads/antigravity/job%20AI%20agent/README.md).
+
+---
+
+## 📄 2. Resume Shapeshifter Tailoring Engine
+
+A zero-fabrication local JD-to-resume editor and analysis board. It lets you upload your resume and paste a target job description (JD) to evaluate compatibility, inspect gap items, rewrite bullets truthfully, and print a side-by-side comparative PDF.
+
+### Key Features
+* **Structured Document Parsers**: Built-in support for parsing PDF text (`pypdf`) and XML-based DOCX files with **zero** heavy system dependencies.
+* **Multi-LLM Integration**: Supports OpenAI, Google Gemini, and Groq Cloud (specifically configured for Llama 3.3).
+* **LCS Word-Diff Engine**: Built a custom client-side Longest Common Subsequence (LCS) diff highlighting system in pure JS, displaying interactive real-time visual inline edits (insertions and deletions).
+* **Zero-Fabrication Guardrail**: Rewrites resume bullet points by adapting syntax and phrasing to align with the JD, without fabricating credentials or metrics.
+* **PDF Proof Generator**: A fully layout-optimized CSS print template for printing or saving a side-by-side matching proof directly from the browser window.
+
+👉 For detailed setup and usage instructions, see [resume shapeshifter/README.md](file:///c:/Users/vikra/Downloads/antigravity/resume%20shapeshifter/README.md).
+
+---
+
+## 🚀 Quick Start Guide
+
+### Prerequisites
+* **Python 3.7+** (Python 3.12.3 recommended)
+* A modern browser (Chrome, Edge, Firefox, Safari)
+
+### Installation
+Run the following command in your terminal to install the combined dependencies for both applications:
+```bash
+pip install pypdf requests curl_cffi beautifulsoup4 rich
+```
+
+### Running the Services
+
+1. **To search and aggregate jobs (CLI):**
    ```bash
-   pip install rich curl_cffi beautifulsoup4
+   cd "job AI agent"
+   python job_agent.py
    ```
 
-2. *(Optional)* To enable live Wellfound scraping, set your Firecrawl API key in your environment:
-   * **Windows PowerShell:**
-     ```powershell
-     $env:FIRECRAWL_API_KEY="your-firecrawl-key"
-     ```
-   * **Windows CMD:**
-     ```cmd
-     set FIRECRAWL_API_KEY=your-firecrawl-key
-     ```
-   * **Linux/macOS:**
-     ```bash
-     export FIRECRAWL_API_KEY="your-firecrawl-key"
-     ```
+2. **To launch the Jobs Dashboard (Web):**
+   ```bash
+   cd "job AI agent"
+   python phase5_web.py
+   ```
+
+3. **To launch the Resume Tailoring Engine (Web):**
+   ```bash
+   cd "resume shapeshifter"
+   python server.py
+   ```
+   Navigate to [http://localhost:8000/](http://localhost:8000/) in your browser to begin tailoring.
 
 ---
 
-## 💻 How to Run
-
-Run the main Job Agent application:
-```bash
-python job_agent.py
-```
-Upon launching, the CLI will prompt you to enter a search term (e.g. `Python Developer` or `Sales`). The script will scan the targets and export the aggregated job listings to `jobs_export.csv` in the current folder.
-
-To run specific architectural phase files:
-```bash
-python phase1_cli.py
-python phase2_cli.py
-python phase3_cli.py
-```
-
----
-
-## 📊 Export Format (`jobs_export.csv`)
-
-The export engine standardizes job records into a clean CSV format with the following columns:
-
-| Column | Description | Example |
-|---|---|---|
-| **Source** | The origin platform of the listing | `Naukri`, `RemoteOK`, or `Wellfound` |
-| **Job Title** | The title of the job opening | `Software Engineer - Python & Cloud` |
-| **Company** | The hiring organization | `Razorpay` |
-| **Location** | Geographical or remote status | `Bangalore/Bengaluru` |
-| **Salary Range** | Extracted or estimated package | `₹ 10 - 15 Lakhs P.A. (Exp: 1-3 years)` |
-| **Apply URL** | The URL to view or apply for the job | `https://www.naukri.com/job-listings-python-123456` |
+*This suite is designed for local deployment, offering rapid, privacy-conscious processing of personal resume and job-hunt data.*
